@@ -114,7 +114,7 @@ class Task(UserControl):
 
 class TodoApp(UserControl):
     def build(self):
-        self.new_task = TextField(hint_text="What needs to be done?", expand=True)
+        self.new_task = TextField(hint_text="What's another on the list #Gentleman?", expand=True)
         self.tasks = Column()
 
         self.filter = Tabs(
