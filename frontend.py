@@ -232,5 +232,7 @@ def index(page: Page):
     page.add(app)
 
 
+"""
 if __name__ == "__main__":
     __import__("flet").app(target=index)
+"""
