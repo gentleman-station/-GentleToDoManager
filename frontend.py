@@ -1,5 +1,3 @@
-from threading import active_count
-from turtle import onkeyrelease
 from flet import (
     Checkbox,
     Column,
@@ -116,11 +114,12 @@ class Task(UserControl):
 class TodoApp(UserControl):
     def build(self):
         self.new_task = TextField(hint_text="What's another on the list #Gentleman?", expand=True, on_submit=self.new_task_submitted)
+        self.tasks = Column()
 
         self.filter = Tabs(
             selected_index=0,
             on_change=self.tabs_changed,
-            tabs=[Tab(text="all"), Tab(text="active"), Tab(text="completed")],
+            tabs=[Tab(text="All"), Tab(text="#Active"), Tab(text="#Completed")],
         )
 
         self.load_list()
@@ -149,11 +148,11 @@ class TodoApp(UserControl):
                                 OutlinedButton(
                                     text="Clear completed", on_click=self.clear_clicked
                                 ),
-                                # TODO
+                                # """* TODO: Implement sync.
                                 # OutlinedButton(
-                                    # text="Refresh list", on_click=self.refresh_clicked
+                                #     text="Refresh list", on_click=self.refresh_clicked
                                 # ),
-                                #
+                                # """
                             ],
                         ),
                     ],
@@ -162,16 +161,16 @@ class TodoApp(UserControl):
         )
 
     def load_list(self):
-        print("Loading list...")
         self.tasks = Column()
         _init_task_qty = 0
         for task_info in get():
-            print(f"Adding task: task.id({task_info._id});", end=" ", flush=True)
+            # print(f"Adding task: task.id({task_info._id});", end=" ", flush=True)
             task = Task(task_info.name, self.task_status_change, self.task_delete, task_info._id, task_info.completed)
+            # print(task_info)
             if task.completion:
                 _init_task_qty += 1
             self.tasks.controls.append(task)
-        print(f"\nWriting active tasks: {_init_task_qty}")
+        # print(f"\nWriting active tasks: {_init_task_qty}")
         self.items_left = Text(f"{_init_task_qty} active item(s) left.")
 
     def new_task_submitted(self, e):
@@ -195,12 +194,14 @@ class TodoApp(UserControl):
     def tabs_changed(self, e):
         self.update()
 
+    """
     def refresh_clicked(self, e):
         #! TODO: FIX ME!!!
         print("Refresh pressed.")
         reload_db()
         self.load_list()
         self.update()
+    """
 
     def clear_clicked(self, e):
         for task in self.tasks.controls[:]:
@@ -212,9 +213,9 @@ class TodoApp(UserControl):
         _active_tasks = 0
         for task in self.tasks.controls:
             task.visible = (
-                status == "all"
-                or (status == "active" and task.completion == False)
-                or (status == "completed" and task.completion)
+                status == "All"
+                or (status == "#Active" and task.completion == False)
+                or (status == "#Completed" and task.completion)
             )
             if task.completion is not True:
                 _active_tasks += 1
@@ -223,7 +224,7 @@ class TodoApp(UserControl):
 
 
 def index(page: Page):
-    page.title = "#GentleToDoManager"
+    page.title = "#GentleToDoMan"
     page.horizontal_alignment = "center"
     page.scroll = "adaptive"
     page.update()
