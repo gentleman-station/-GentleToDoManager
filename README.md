@@ -21,5 +21,5 @@ $ virtualenv venv && source venv/bin/activate # step-x (optional)
 
 $ pip install -U pip && pip install -Ur requirements.txt # step-2
 
-$ ./main # or "python3 ./main.py"  step-3
+$ ./main # or "python3 ./main.py" or "python3 ./main --help"  step-3
 ```
