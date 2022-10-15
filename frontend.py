@@ -147,11 +147,13 @@ class TodoApp(UserControl):
                             controls=[
                                 self.items_left,
                                 OutlinedButton(
-                                    text="Refresh list", on_click=self.refresh_clicked
-                                ),
-                                OutlinedButton(
                                     text="Clear completed", on_click=self.clear_clicked
                                 ),
+                                # TODO
+                                # OutlinedButton(
+                                    # text="Refresh list", on_click=self.refresh_clicked
+                                # ),
+                                #
                             ],
                         ),
                     ],
