@@ -6,7 +6,7 @@ A simple To-Do Manager for **`#Gentleman`** (under construction, tons of feature
 
 ## Trial / Usage
 
-> To run this application, just clone the project {<u>step-1</u>}
+> To run this application, just clone the project and navigate to its cloned path {<u>step-1</u>}
 > 
 > > - Then, simply either create and enable a virtual environment within python, or leave as is. {<u>step-x</u>}
 > > 
@@ -15,7 +15,7 @@ A simple To-Do Manager for **`#Gentleman`** (under construction, tons of feature
 > > - Now, simply execute the `main.py` python file. (You may also try `--help` command-line flag.) {<u>step-3</u>}
 
 ```shell
-$ git clone https://github.com/gentleman-station/GentleToDoMan # step-1
+$ git clone https://github.com/gentleman-station/GentleToDoMan && cd GentleToDoMan # step-1
 
 $ virtualenv venv && source venv/bin/activate # step-x (optional)
 
