@@ -164,12 +164,12 @@ class TodoApp(UserControl):
         self.tasks = Column()
         _init_task_qty = 0
         for task_info in get():
-            print(f"Appending task: {task_info}")
+            print(f"Adding task: task.id({task_info._id});", end=" ", flush=True)
             task = Task(task_info.name, self.task_status_change, self.task_delete, task_info._id, task_info.completed)
             if task.completion:
                 _init_task_qty += 1
             self.tasks.controls.append(task)
-        print(f"Writing active tasks: {_init_task_qty}")
+        print(f"\nWriting active tasks: {_init_task_qty}")
         self.items_left = Text(f"{_init_task_qty} active item(s) left.")
 
     def new_task_submitted(self, e):

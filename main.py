@@ -5,18 +5,17 @@ from fire import Fire
 import flet
 
 
-def run(execute: bool = True, web: bool = False):
+def run(web: bool = False, host: str = '0.0.0.0', port: int = 55555):
     """Execute #GentleToDoManager
 
     Args:
-        execute (bool, optional): Weather to execute this application. (Default: True)
         web (bool, optional): Use web version of this application while executing it. (Default: False)
     """
-    if execute:
-        if web:
-            flet.app(target=index, view=flet.WEB_BROWSER, host="0.0.0.0", port=55555)
-        else:
-            flet.app(target=index)
+    if web:
+        print(f"Serving a flet web app. on http://{host}:{port} (Note: Launching the URL in your default web browser.")
+        flet.app(target=index, view=flet.WEB_BROWSER, host=host, port=port)
+    else:
+        flet.app(target=index)
 
 
 if __name__ == '__main__':
