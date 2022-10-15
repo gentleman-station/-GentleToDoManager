@@ -82,3 +82,10 @@ def get(filter: dict = {}) -> list:
     for task_info in task_collection.find(filter):
         tasks.append(ApplyDotNotation(task_info))
     return tasks
+
+
+def reload_db():
+    global db_client, database, task_collection
+    db_client = MontyClient(DATABASE_PATH)
+    database = db_client[DATABASE_NAME]
+    task_collection = database.tasks

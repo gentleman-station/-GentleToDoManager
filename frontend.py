@@ -1,4 +1,5 @@
 from threading import active_count
+from turtle import onkeyrelease
 from flet import (
     Checkbox,
     Column,
@@ -14,7 +15,7 @@ from flet import (
     UserControl,
     colors,
     icons,
-); from backend import add, remove, edit, get
+); from backend import add, remove, edit, get, reload_db
 
 
 #? TODO: Lint below code for better linking backend.
@@ -114,8 +115,7 @@ class Task(UserControl):
 
 class TodoApp(UserControl):
     def build(self):
-        self.new_task = TextField(hint_text="What's another on the list #Gentleman?", expand=True)
-        self.tasks = Column()
+        self.new_task = TextField(hint_text="What's another on the list #Gentleman?", expand=True, on_submit=self.new_task_submitted)
 
         self.filter = Tabs(
             selected_index=0,
@@ -123,14 +123,7 @@ class TodoApp(UserControl):
             tabs=[Tab(text="all"), Tab(text="active"), Tab(text="completed")],
         )
 
-        _init_task_qty = 0
-        for task_info in get():
-            task = Task(task_info.name, self.task_status_change, self.task_delete, task_info._id, task_info.completed)
-            if task.completion:
-                _init_task_qty += 1
-            self.tasks.controls.append(task)
-
-        self.items_left = Text(f"{_init_task_qty} active item(s) left.")
+        self.load_list()
 
         #? INFO: App's root control (i.e. "view") containing all other controls.
         return Column(
@@ -154,6 +147,9 @@ class TodoApp(UserControl):
                             controls=[
                                 self.items_left,
                                 OutlinedButton(
+                                    text="Refresh list", on_click=self.refresh_clicked
+                                ),
+                                OutlinedButton(
                                     text="Clear completed", on_click=self.clear_clicked
                                 ),
                             ],
@@ -162,6 +158,22 @@ class TodoApp(UserControl):
                 ),
             ],
         )
+
+    def load_list(self):
+        print("Loading list...")
+        self.tasks = Column()
+        _init_task_qty = 0
+        for task_info in get():
+            print(f"Appending task: {task_info}")
+            task = Task(task_info.name, self.task_status_change, self.task_delete, task_info._id, task_info.completed)
+            if task.completion:
+                _init_task_qty += 1
+            self.tasks.controls.append(task)
+        print(f"Writing active tasks: {_init_task_qty}")
+        self.items_left = Text(f"{_init_task_qty} active item(s) left.")
+
+    def new_task_submitted(self, e):
+        return self.add_clicked(e)
 
     def add_clicked(self, e):
         if self.new_task.value:
@@ -179,6 +191,13 @@ class TodoApp(UserControl):
         self.update()
 
     def tabs_changed(self, e):
+        self.update()
+
+    def refresh_clicked(self, e):
+        #! TODO: FIX ME!!!
+        print("Refresh pressed.")
+        reload_db()
+        self.load_list()
         self.update()
 
     def clear_clicked(self, e):

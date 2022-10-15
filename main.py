@@ -14,7 +14,7 @@ def run(execute: bool = True, web: bool = False):
     """
     if execute:
         if web:
-            flet.app(target=index, view=flet.WEB_BROWSER)
+            flet.app(target=index, view=flet.WEB_BROWSER, host="0.0.0.0", port=55555)
         else:
             flet.app(target=index)
 
